@@ -12,7 +12,11 @@ const SCOPES = [
 
 async function getOAuth2Client() {
   const creds = await loadCredentials();
-  const redirectUri = creds.redirect_uris?.[0] || `http://localhost:${process.env.PORT || 3001}/auth/google/callback`;
+  // APP_URL determines the redirect URI:
+  //   Production: APP_URL=https://your-app.up.railway.app → uses that
+  //   Local dev:  APP_URL not set → falls back to localhost
+  const baseUrl = process.env.APP_URL || `http://localhost:${process.env.PORT || 3001}`;
+  const redirectUri = `${baseUrl}/auth/google/callback`;
   return new google.auth.OAuth2(creds.client_id, creds.client_secret, redirectUri);
 }
 
