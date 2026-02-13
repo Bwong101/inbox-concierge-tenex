@@ -1,11 +1,6 @@
 import { Router } from 'express';
 import { google } from 'googleapis';
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CREDENTIALS_PATH = path.join(__dirname, '../../credentials.json');
+import { loadCredentials } from '../services/credentials.js';
 
 const SCOPES = [
   'https://www.googleapis.com/auth/gmail.readonly',
@@ -16,11 +11,7 @@ const SCOPES = [
 ];
 
 async function getOAuth2Client() {
-  const content = JSON.parse(await fs.readFile(CREDENTIALS_PATH, 'utf-8'));
-  const creds = content.web || content.installed;
-  if (!creds) {
-    throw new Error('credentials.json must contain a "web" or "installed" key');
-  }
+  const creds = await loadCredentials();
   const redirectUri = creds.redirect_uris?.[0] || `http://localhost:${process.env.PORT || 3001}/auth/google/callback`;
   return new google.auth.OAuth2(creds.client_id, creds.client_secret, redirectUri);
 }
@@ -56,7 +47,9 @@ authRouter.get('/google/callback', async (req, res) => {
     const { data } = await oauth2Api.userinfo.get();
     req.session.userEmail = data.email;
 
-    res.redirect('http://localhost:5173');
+    // Redirect to frontend — use APP_URL env var in production, fallback to localhost
+    const appUrl = process.env.APP_URL || 'http://localhost:5173';
+    res.redirect(appUrl);
   } catch (err) {
     console.error('OAuth callback error:', err);
     res.status(500).json({ error: err.message });

@@ -5,7 +5,8 @@
   "main": "src/cli.js",
   "type": "module",
   "scripts": {
-    "start": "node src/cli.js analyze-filter",
+    "start": "node server/index.js",
+    "cli": "node src/cli.js analyze-filter",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node server/index.js",
     "client": "cd client && npx vite",
