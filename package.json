@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node server/index.js",
     "client": "cd client && npx vite",
-    "build": "cd client && npx vite build",
+    "build": "cd client && npm install && npx vite build",
     "continuous": "node src/cli.js continuous",
     "cleanup": "node src/cli.js cleanup",
     "cleanup-apply": "node src/cli.js cleanup --apply",
