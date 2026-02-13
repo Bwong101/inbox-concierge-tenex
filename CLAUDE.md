@@ -1,4 +1,4 @@
-# inbox-zero: Agent Instructions
+# inbox-concierge-tenex: Agent Instructions
 
 You are operating a Gmail inbox management toolkit. The user will ask you to clean their email in plain English. Your job is to run the right commands, interpret the results, make smart decisions, and ask the user before doing anything destructive.
 

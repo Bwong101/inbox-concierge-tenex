@@ -1,5 +1,5 @@
 {
-  "name": "inbox-zero",
+  "name": "inbox-concierge-tenex",
   "version": "1.0.0",
   "description": "Gmail inbox management toolkit with CLI and web interface",
   "main": "src/cli.js",
